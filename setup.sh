@@ -33,13 +33,3 @@ fi
 if [ ! -d /etc/puppet/modules/elasticsearch ]; then
  puppet module install elasticsearch-elasticsearch
 fi
-if [ ! -d /etc/puppet/modules/logstash ]; then
- puppet module install elasticsearch-logstash
-fi
-if [ ! -f /etc/init.d/kibana ]; then
- sudo cp /vagrant/kibana4_init /etc/init.d/kibana
- sudo sed -i 's/\r//' /etc/init.d/kibana
- sudo chmod +x /etc/init.d/kibana
- sudo update-rc.d kibana defaults
- wget -q http://geolite.maxmind.com/download/geoip/database/GeoLiteCountry/GeoIP.dat.gz http://geolite.maxmind.com/download/geoip/database/GeoIPv6.dat.gz http://geolite.maxmind.com/download/geoip/database/GeoLiteCity.dat.gz http://download.maxmind.com/download/geoip/database/asnum/GeoIPASNum.dat.gz
-fi
