@@ -11,6 +11,12 @@ Vagrant.configure(VAGRANTFILE_API_VERSION) do |config|
     config.vbguest.auto_update = true
   end
 
+  if Vagrant.has_plugin?("vagrant-proxyconf")
+    config.proxy.http = "http://10.0.0.1:8123"
+    config.proxy.https = "http://10.0.0.1:8123/"
+    config.proxy.no_proxy = "localhost,192.168.1.0/24,127.0.0.1,10.0.0.0/24,.example.com"
+  end
+
   config.vm.box = "puppetlabs/ubuntu-14.04-64-puppet"
   # config.vm.network :forwarded_port, guest: 5601, host: 5601
   # config.vm.network :forwarded_port, guest: 9200, host: 9200
