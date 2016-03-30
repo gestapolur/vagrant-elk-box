@@ -33,6 +33,10 @@ Vagrant.configure(VAGRANTFILE_API_VERSION) do |config|
     v.vmx["numvcpus"] = "2"
     v.vmx["memsize"] = "2048"
   end
+  config.vm.provision "fix-no-tty", type: "shell" do |s|
+    s.privileged = false
+    s.inline = "sudo sed -i '/tty/!s/mesg n/tty -s \\&\\& mesg n/' /root/.profile"
+  end
   config.vm.provision "shell", path: 'setup.sh'
   config.vm.provision "puppet", manifests_path: "manifests", manifest_file: "default.pp"
 
