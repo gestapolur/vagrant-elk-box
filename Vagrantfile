@@ -38,10 +38,13 @@ Vagrant.configure(VAGRANTFILE_API_VERSION) do |config|
     s.inline = "sudo sed -i '/tty/!s/mesg n/tty -s \\&\\& mesg n/' /root/.profile"
   end
   config.vm.provision "shell", path: 'setup.sh'
-  config.vm.provision "puppet", manifests_path: "manifests", manifest_file: "default.pp"
-
   (1..2).each do |i|
     config.vm.define "node-#{i}" do |node|
+      config.vm.provision "puppet" do |puppet|
+        puppet.manifests_path = "manifests"
+        puppet.manifest_file = "default.pp"
+        puppet.facter["node_name"] = "es-#{i}"
+      end
       node.vm.network :forwarded_port, guest: 9200, host: 9200+i
       node.vm.network :forwarded_port, guest: 5601, host: 5601+i
       node.vm.network "private_network", ip: "10.0.0.1#{i}"
